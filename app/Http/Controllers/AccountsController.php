@@ -36,6 +36,21 @@ class AccountsController extends Controller
         return response()->json(['data' => $data]);
     }
 
+    public function update($id)
+    {
+        Account::find($id)->update([
+            'account_name'=> request('account_name'),
+            'bank_id' => request('bank_id'),
+            'account_no' => request('account_no'),
+            'branch' => request('branch'),
+            'account_type' => request('account_type'),
+            'swift_code' => request('swift_code'),
+            'route_no' => request('route_no')
+        ]);
+
+        return response()->json(['status' => 'ok'],200);
+    }
+
     public function delete($id)
     {
         Account::find($id)->delete();

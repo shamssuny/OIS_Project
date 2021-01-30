@@ -1847,6 +1847,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navigation */ "./resources/js/components/Bank/Navigation.vue");
+//
 //
 //
 //
@@ -1878,8 +1880,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Form",
+  components: {
+    Navigation: _Navigation__WEBPACK_IMPORTED_MODULE_1__.default
+  },
   data: function data() {
     return {
       account_name: '',
@@ -1902,42 +1908,116 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.account_name && !this.account_no && !this.branch && !this.account_type && !this.sift_code && !this.route_no && !this.bank_id.id) {
         alert('Fields are empty');
       } else {
-        axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/saveAccount', {
-          'account_name': this.account_name,
-          'bank_id': this.bank_id.id,
-          'account_no': this.account_no,
-          'branch': this.branch,
-          'account_type': this.account_type,
-          'swift_code': this.sift_code,
-          'route_no': this.route_no
-        }).then(function (response) {
-          alert('Save Success');
-          vm.$router.replace({
-            path: '/show'
+        if (this.$route.params.id) {
+          //update data
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/updateAccount/' + this.$route.params.id, {
+            'account_name': this.account_name,
+            'bank_id': this.bank_id,
+            'account_no': this.account_no,
+            'branch': this.branch,
+            'account_type': this.account_type,
+            'swift_code': this.sift_code,
+            'route_no': this.route_no
+          }).then(function (response) {
+            alert('Update Success');
+            vm.$router.replace({
+              path: '/show'
+            });
+          })["catch"](function (error) {
+            alert('Something wrong' + error);
           });
-        })["catch"](function (error) {
-          alert('Something wrong' + error);
+        } else {
+          axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/saveAccount', {
+            'account_name': this.account_name,
+            'bank_id': this.bank_id,
+            'account_no': this.account_no,
+            'branch': this.branch,
+            'account_type': this.account_type,
+            'swift_code': this.sift_code,
+            'route_no': this.route_no
+          }).then(function (response) {
+            alert('Save Success');
+            vm.$router.replace({
+              path: '/show'
+            });
+          })["catch"](function (error) {
+            alert('Something wrong' + error);
+          });
+        }
+      }
+    },
+    resetData: function resetData() {
+      var vm = this;
+      vm.account_name = '';
+      vm.account_no = '';
+      vm.branch = '';
+      vm.account_type = '';
+      vm.sift_code = '';
+      vm.route_no = '';
+      vm.bank_id = '';
+    },
+    setFormData: function setFormData() {
+      //get bank info
+      var vm = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/getBank').then(function (response) {
+        // console.log(response.data.banks);
+        vm.banksData = response.data.banks;
+      });
+
+      if (this.$route.params.id) {
+        var _vm = this;
+
+        axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/getData/' + this.$route.params.id).then(function (response) {
+          _vm.eachBankId = _vm.$route.params.id;
+          _vm.eachBankData = response.data.data[0]; //set the input values
+
+          console.log(_vm.eachBankData[0]);
+          _vm.account_name = _vm.eachBankData.account_name;
+          _vm.account_no = _vm.eachBankData.account_no;
+          _vm.branch = _vm.eachBankData.branch;
+          _vm.account_type = _vm.eachBankData.account_type;
+          _vm.sift_code = _vm.eachBankData.swift_code;
+          _vm.route_no = _vm.eachBankData.route_no;
+          _vm.bank_id = _vm.eachBankData.bank_id; //set selected bank option
         });
+      } else {
+        this.resetData();
       }
     }
   },
   mounted: function mounted() {
-    if (this.$route.params.id) {
-      var _vm = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/getData/' + this.$route.params.id).then(function (response) {
-        _vm.eachBankId = _vm.$route.params.id;
-        _vm.eachBankData = response.data.data;
-      });
-    } else {} //get bank info
-
-
-    var vm = this;
-    var banks = axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/getBank').then(function (response) {
-      // console.log(response.data.banks);
-      vm.banksData = response.data.banks;
-    });
+    this.setFormData();
+  },
+  watch: {
+    // call again the method if the route changes
+    '$route': 'setFormData'
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Navigation.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Navigation.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Navigation"
 });
 
 /***/ }),
@@ -1955,6 +2035,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navigation */ "./resources/js/components/Bank/Navigation.vue");
+//
 //
 //
 //
@@ -1981,8 +2063,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Show",
+  components: {
+    Navigation: _Navigation__WEBPACK_IMPORTED_MODULE_1__.default
+  },
   data: function data() {
     return {
       accountData: ''
@@ -2532,6 +2618,45 @@ component.options.__file = "resources/js/components/Bank/Form.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Bank/Navigation.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/Bank/Navigation.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Navigation_vue_vue_type_template_id_24ab74cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navigation.vue?vue&type=template&id=24ab74cc&scoped=true& */ "./resources/js/components/Bank/Navigation.vue?vue&type=template&id=24ab74cc&scoped=true&");
+/* harmony import */ var _Navigation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Navigation.vue?vue&type=script&lang=js& */ "./resources/js/components/Bank/Navigation.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _Navigation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _Navigation_vue_vue_type_template_id_24ab74cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Navigation_vue_vue_type_template_id_24ab74cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "24ab74cc",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Bank/Navigation.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Bank/Show.vue":
 /*!***********************************************!*\
   !*** ./resources/js/components/Bank/Show.vue ***!
@@ -2704,6 +2829,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Bank/Navigation.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Bank/Navigation.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Navigation.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Navigation.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Bank/Show.vue?vue&type=script&lang=js&":
 /*!************************************************************************!*\
   !*** ./resources/js/components/Bank/Show.vue?vue&type=script&lang=js& ***!
@@ -2781,6 +2922,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_585e9108_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_585e9108_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Form.vue?vue&type=template&id=585e9108&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Form.vue?vue&type=template&id=585e9108&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Bank/Navigation.vue?vue&type=template&id=24ab74cc&scoped=true&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/Bank/Navigation.vue?vue&type=template&id=24ab74cc&scoped=true& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_template_id_24ab74cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_template_id_24ab74cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Navigation_vue_vue_type_template_id_24ab74cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Navigation.vue?vue&type=template&id=24ab74cc&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Navigation.vue?vue&type=template&id=24ab74cc&scoped=true&");
 
 
 /***/ }),
@@ -2869,222 +3027,275 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "form",
-      {
-        staticClass: "form-group",
-        attrs: { method: "POST" },
-        on: { submit: _vm.createAccount }
-      },
-      [
-        _c("label", { attrs: { for: "" } }, [_vm._v("Account Name")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.account_name,
-              expression: "account_name"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            name: "account_name",
-            placeholder: "Account Name"
-          },
-          domProps: { value: _vm.account_name },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.account_name = $event.target.value
-            }
-          }
-        }),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "" } }, [_vm._v("Bank")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
+  return _c(
+    "div",
+    [
+      _c("Navigation"),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "form-group",
+          attrs: { method: "POST" },
+          on: { submit: _vm.createAccount }
+        },
+        [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Account Name")]),
+          _vm._v(" "),
+          _c("input", {
             directives: [
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.bank_id,
-                expression: "bank_id"
+                value: _vm.account_name,
+                expression: "account_name"
               }
             ],
             staticClass: "form-control",
-            attrs: { name: "bank_id", id: "" },
+            attrs: {
+              type: "text",
+              name: "account_name",
+              placeholder: "Account Name"
+            },
+            domProps: { value: _vm.account_name },
             on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.bank_id = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_name = $event.target.value
               }
             }
-          },
-          _vm._l(_vm.banksData, function(bank) {
-            return _c(
-              "option",
-              { domProps: { value: { id: bank.id, text: bank.name } } },
-              [_vm._v(_vm._s(bank.name))]
-            )
           }),
-          0
-        ),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "" } }, [_vm._v("Account No")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("Bank")]),
+          _vm._v(" "),
+          _c(
+            "select",
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.account_no,
-              expression: "account_no"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            name: "account_no",
-            placeholder: "Account No"
-          },
-          domProps: { value: _vm.account_no },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.bank_id,
+                  expression: "bank_id"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { name: "bank_id", id: "" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.bank_id = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
               }
-              _vm.account_no = $event.target.value
-            }
-          }
-        }),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "" } }, [_vm._v("Branch")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.branch,
-              expression: "branch"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", name: "branch", placeholder: "Branch" },
-          domProps: { value: _vm.branch },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            },
+            _vm._l(_vm.banksData, function(bank) {
+              return _c(
+                "option",
+                {
+                  domProps: {
+                    value: bank.id,
+                    selected: _vm.bank_id === bank.id ? true : false
+                  }
+                },
+                [_vm._v(_vm._s(bank.name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("Account No")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.account_no,
+                expression: "account_no"
               }
-              _vm.branch = $event.target.value
-            }
-          }
-        }),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "" } }, [_vm._v("Account Type")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.account_type,
-              expression: "account_type"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            name: "account_type",
-            placeholder: "Account Type"
-          },
-          domProps: { value: _vm.account_type },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "number",
+              name: "account_no",
+              placeholder: "Account No"
+            },
+            domProps: { value: _vm.account_no },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_no = $event.target.value
               }
-              _vm.account_type = $event.target.value
             }
-          }
-        }),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "" } }, [_vm._v("Swift Code")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.sift_code,
-              expression: "sift_code"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", name: "sift_code", placeholder: "Swift Code" },
-          domProps: { value: _vm.sift_code },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("Branch")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.branch,
+                expression: "branch"
               }
-              _vm.sift_code = $event.target.value
-            }
-          }
-        }),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "" } }, [_vm._v("Route No")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.route_no,
-              expression: "route_no"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", name: "route_no", placeholder: "Route No" },
-          domProps: { value: _vm.route_no },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "branch", placeholder: "Branch" },
+            domProps: { value: _vm.branch },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.branch = $event.target.value
               }
-              _vm.route_no = $event.target.value
             }
-          }
-        }),
-        _c("br"),
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("Account Type")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.account_type,
+                expression: "account_type"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "number",
+              name: "account_type",
+              placeholder: "Account Type"
+            },
+            domProps: { value: _vm.account_type },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.account_type = $event.target.value
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("Swift Code")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.sift_code,
+                expression: "sift_code"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              name: "sift_code",
+              placeholder: "Swift Code"
+            },
+            domProps: { value: _vm.sift_code },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.sift_code = $event.target.value
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("Route No")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.route_no,
+                expression: "route_no"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", name: "route_no", placeholder: "Route No" },
+            domProps: { value: _vm.route_no },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.route_no = $event.target.value
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "submit", name: "submit", value: "Save / Update" }
+          })
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Navigation.vue?vue&type=template&id=24ab74cc&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Bank/Navigation.vue?vue&type=template&id=24ab74cc&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "row col-md-12", staticStyle: { display: "inline" } },
+      [
+        _c("router-link", { attrs: { to: "/show" } }, [_vm._v("Account List")]),
         _vm._v(" "),
-        _c("input", {
-          attrs: { type: "submit", name: "submit", value: "Save / Update" }
-        })
-      ]
+        _c("router-link", { attrs: { to: "/create" } }, [
+          _vm._v("Create Account")
+        ])
+      ],
+      1
     )
   ])
 }
@@ -3111,66 +3322,73 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row col-md-8" }, [
-    _c(
-      "table",
-      { attrs: { border: "1px", width: "100%" } },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._l(_vm.accountData, function(account) {
-          return _c("tr", [
-            _c("td", [_vm._v(_vm._s(account.account_name))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(account.bank.name))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(account.account_no))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(account.branch))]),
-            _vm._v(" "),
-            _c("td", [
-              _vm._v(
-                _vm._s(
-                  account.account_type === 1
-                    ? "Saving"
-                    : account.account_type === 2
-                    ? "Current"
-                    : "Join"
-                )
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", [
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.editPage(account.id)
-                    }
-                  }
-                },
-                [_vm._v("edit")]
-              ),
+  return _c(
+    "div",
+    { staticClass: "row col-md-8" },
+    [
+      _c("Navigation"),
+      _vm._v(" "),
+      _c(
+        "table",
+        { attrs: { border: "1px", width: "100%" } },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._l(_vm.accountData, function(account) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(account.account_name))]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.deleteAccount(account.id)
+              _c("td", [_vm._v(_vm._s(account.bank.name))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(account.account_no))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(account.branch))]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(
+                  _vm._s(
+                    account.account_type === 1
+                      ? "Saving"
+                      : account.account_type === 2
+                      ? "Current"
+                      : "Join"
+                  )
+                )
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.editPage(account.id)
+                      }
                     }
-                  }
-                },
-                [_vm._v("Delete")]
-              )
+                  },
+                  [_vm._v("edit")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.deleteAccount(account.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              ])
             ])
-          ])
-        })
-      ],
-      2
-    )
-  ])
+          })
+        ],
+        2
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

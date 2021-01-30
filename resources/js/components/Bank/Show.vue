@@ -1,5 +1,6 @@
 <template>
     <div class="row col-md-8">
+        <Navigation></Navigation>
         <table border="1px" width="100%">
             <tr>
                 <th>Account Name</th>
@@ -25,8 +26,12 @@
 
 <script>
     import axios from 'axios';
+    import Navigation from './Navigation'
     export default {
         name: "Show",
+        components:{
+          Navigation
+        },
         data(){
             return {
                 accountData: ''

@@ -21,6 +21,7 @@ Route::post('/login',[UserController::class,'authenticate']);
 Route::get('/getBank',[\App\Http\Controllers\BankController::class,'getData']);
 
 Route::post('/saveAccount',[\App\Http\Controllers\AccountsController::class,'create']);
+Route::post('/updateAccount/{id}',[\App\Http\Controllers\AccountsController::class,'update']);
 Route::get('/getAccounts',[\App\Http\Controllers\AccountsController::class,'getData']);
 Route::get('/getData/{id}',[\App\Http\Controllers\AccountsController::class,'getOneAccount']);
 Route::get('/delete/{id}',[\App\Http\Controllers\AccountsController::class,'delete']);
